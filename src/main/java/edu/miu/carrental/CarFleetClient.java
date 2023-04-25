@@ -42,14 +42,14 @@ public class CarFleetClient {
 
     }
 
-    public CarsDto reserveCarInFleet(String licensePlate){
+    public CarDto reserveCarInFleet(String licensePlate){
         if(fleetBaseUrl.endsWith("/")){
             fleetBaseUrl = fleetBaseUrl.substring(0,fleetBaseUrl.length()-1);
         }
 
-        CarsDto carsDto = restTemplate.getForObject(fleetBaseUrl+"/{licensePlate}/reserve", CarsDto.class,licensePlate);
-        logger.info("Car DTO REST Response reserveCarInFleet()::: {}",gson.toJson(carsDto));
-        return carsDto;
+        CarDto carDto = restTemplate.getForObject(fleetBaseUrl+"/{licensePlate}/reserve", CarDto.class,licensePlate);
+        logger.info("Car DTO REST Response reserveCarInFleet()::: {}",gson.toJson(carDto));
+        return carDto;
 
     }
 

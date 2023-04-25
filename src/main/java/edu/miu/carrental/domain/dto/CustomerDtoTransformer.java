@@ -13,7 +13,7 @@ import java.util.List;
 public class CustomerDtoTransformer {
 
     public static CustomerDto getCustomersDtoFromCustomers(Customer customer) {
-        return new CustomerDto(customer.getCustomerNumber(), customer.getName(), customer.getEmail(), customer.getReservations(), customer.getCarRentals());
+        return new CustomerDto(customer.getCustomerNumber(), customer.getName(), customer.getEmail(), customer.getReservations());
     }
 
 //    public static Customer getCustomerFromCustomerDto(CustomerDto dto){

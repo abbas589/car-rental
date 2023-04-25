@@ -1,37 +1,18 @@
-package edu.miu.carrental.domain.entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+package edu.miu.carrental.domain.dto;
 
 import java.math.BigDecimal;
 
 /**
  * @author bazz
- * Apr 23 2023
- * 20:45
+ * Apr 25 2023
+ * 14:40
  */
-@Entity
-public class Payment {
-    @Id
-    @GeneratedValue
-    private Long id;
-
+public class ReturnCarDto {
     private String creditCardNumber;
     private String cardCvv;
     private BigDecimal amountPaid;
     private String paymentType;
-    @ManyToOne
-    private Customer customer;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
+    private Long customerNumber;
 
 
     public String getCreditCardNumber() {
@@ -66,11 +47,11 @@ public class Payment {
         this.paymentType = paymentType;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Long getCustomerNumber() {
+        return customerNumber;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerNumber(Long customerNumber) {
+        this.customerNumber = customerNumber;
     }
 }

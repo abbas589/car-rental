@@ -1,6 +1,5 @@
 package edu.miu.carrental.domain.dto;
 
-import edu.miu.carrental.domain.entity.CarRental;
 import edu.miu.carrental.domain.entity.Reservation;
 
 import java.util.List;
@@ -15,7 +14,6 @@ public class CustomerDto {
     private String name;
     private String email;
     private List<Reservation> reservations;
-    private List<CarRental> carRentals;
 
     public Long getCustomerNumber() {
         return customerNumber;
@@ -49,20 +47,11 @@ public class CustomerDto {
         this.reservations = reservations;
     }
 
-    public List<CarRental> getCarRentals() {
-        return carRentals;
-    }
-
-    public void setCarRentals(List<CarRental> carRentals) {
-        this.carRentals = carRentals;
-    }
-
-    public CustomerDto(Long customerNumber, String name, String email, List<Reservation> reservations, List<CarRental> carRentals) {
+    public CustomerDto(Long customerNumber, String name, String email, List<Reservation> reservations) {
         this.customerNumber = customerNumber;
         this.name = name;
         this.email = email;
         this.reservations = reservations;
-        this.carRentals = carRentals;
     }
     public CustomerDto(){}
 }

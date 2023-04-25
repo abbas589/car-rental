@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -19,13 +20,19 @@ public class Reservation {
     private Long id;
     private String licensePlate;
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate pickupDate;
+    private LocalDate returnDate;
     @ManyToOne
     private Customer customer;
 
+    @ManyToOne
+    private Payment payment;
 
-    public Reservation(String licensePlate, LocalDateTime startDate, LocalDateTime endDate, Customer customer) {
+
+    public Reservation(String licensePlate, LocalDate startDate, LocalDate endDate, Customer customer) {
         this.licensePlate = licensePlate;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -52,19 +59,19 @@ public class Reservation {
         this.licensePlate = licensePlate;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -74,5 +81,29 @@ public class Reservation {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public LocalDate getPickupDate() {
+        return pickupDate;
+    }
+
+    public void setPickupDate(LocalDate pickupDate) {
+        this.pickupDate = pickupDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

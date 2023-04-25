@@ -19,10 +19,6 @@ public class Customer {
     private String name;
     private String email;
 
-    @OneToMany
-    private List<Reservation> reservations;
-    @OneToMany
-    private List<CarRental> carRentals;
 
 
     public Long getCustomerNumber() {
@@ -49,19 +45,5 @@ public class Customer {
         this.email = email;
     }
 
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
 
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public List<CarRental> getCarRentals() {
-        return carRentals;
-    }
-
-    public void setCarRentals(List<CarRental> carRentals) {
-        this.carRentals = carRentals;
-    }
 }

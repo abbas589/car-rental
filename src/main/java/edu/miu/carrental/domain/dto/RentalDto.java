@@ -6,4 +6,5 @@ package edu.miu.carrental.domain.dto;
  * 18:29
  */
 public class RentalDto {
+    private String reservationNumber;
 }
