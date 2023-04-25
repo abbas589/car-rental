@@ -29,6 +29,11 @@ public class CustomerController {
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
+    @GetMapping("search")
+    public ResponseEntity<CustomersDto> searchCustomer(@RequestParam("searchBy") String searchBy, @RequestParam("value") String value){
+        return new ResponseEntity<CustomersDto>(customerService.searchCustomer(searchBy,value),HttpStatus.OK);
+    }
+
     @PostMapping("create")
     public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customer) {
         CustomerDto createdCustomer = customerService.createCustomer(customer);
@@ -36,7 +41,7 @@ public class CustomerController {
     }
 
     @PutMapping("update/{customernumber}")
-    public ResponseEntity<?> updateCustomer(@PathVariable String customernumber, @RequestBody CustomerDto customer) {
+    public ResponseEntity<?> updateCustomer(@PathVariable Long customernumber, @RequestBody CustomerDto customer) {
         CustomerDto updatedCustomer = customerService.updateCustomer(customernumber, customer);
         if (updatedCustomer == null) {
             return new ResponseEntity<String>("Invalid Customer Number, please check and try again", HttpStatus.NOT_FOUND);
@@ -45,7 +50,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{customernumber}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable String customernumber) {
+    public ResponseEntity<?> deleteCustomer(@PathVariable Long customernumber) {
         boolean deleted = customerService.deleteCustomer(customernumber);
         if (deleted) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

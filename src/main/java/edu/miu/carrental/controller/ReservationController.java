@@ -1,5 +1,6 @@
 package edu.miu.carrental.controller;
 
+import edu.miu.carrental.domain.dto.CarsDto;
 import edu.miu.carrental.domain.dto.ReservationDto;
 import edu.miu.carrental.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<?> reserveCar(ReservationDto dto){
         return new ResponseEntity<ReservationDto>(reservationService.reserveCar(dto), HttpStatus.OK);
+    }
+    @PostMapping("search")
+    public ResponseEntity<?> seachCar(ReservationDto dto){
+        return new ResponseEntity<CarsDto>(reservationService.searchCar(dto), HttpStatus.OK);
     }
 
 }

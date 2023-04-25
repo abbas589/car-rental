@@ -23,4 +23,56 @@ public class Reservation {
     private LocalDateTime endDate;
     @ManyToOne
     private Customer customer;
+
+
+    public Reservation(String licensePlate, LocalDateTime startDate, LocalDateTime endDate, Customer customer) {
+        this.licensePlate = licensePlate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.customer = customer;
+    }
+
+    public Reservation() {
+        super();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

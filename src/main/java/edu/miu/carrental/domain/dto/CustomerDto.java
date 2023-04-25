@@ -56,5 +56,14 @@ public class CustomerDto {
     public void setCarRentals(List<CarRental> carRentals) {
         this.carRentals = carRentals;
     }
+
+    public CustomerDto(Long customerNumber, String name, String email, List<Reservation> reservations, List<CarRental> carRentals) {
+        this.customerNumber = customerNumber;
+        this.name = name;
+        this.email = email;
+        this.reservations = reservations;
+        this.carRentals = carRentals;
+    }
+    public CustomerDto(){}
 }
 

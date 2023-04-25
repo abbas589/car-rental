@@ -9,4 +9,18 @@ import java.util.Collection;
  */
 public class CustomersDto {
     Collection<CustomerDto> customers;
+
+    public Collection<CustomerDto> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Collection<CustomerDto> customers) {
+        this.customers = customers;
+    }
+
+    public CustomersDto(Collection<CustomerDto> customers) {
+        this.customers = customers;
+    }
+
+    public CustomersDto(){}
 }
