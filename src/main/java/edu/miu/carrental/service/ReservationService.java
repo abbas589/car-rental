@@ -1,7 +1,11 @@
 package edu.miu.carrental.service;
+
 import java.math.BigDecimal;
+
+import edu.miu.carrental.AppConfiguration;
 import edu.miu.carrental.domain.dto.*;
 import edu.miu.carrental.domain.entity.Customer;
+
 import java.time.LocalDate;
 
 import edu.miu.carrental.CarFleetClient;
@@ -10,7 +14,10 @@ import edu.miu.carrental.domain.entity.Reservation;
 import edu.miu.carrental.respository.CustomerRepository;
 import edu.miu.carrental.respository.PaymentRepository;
 import edu.miu.carrental.respository.ReservationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,22 +42,33 @@ public class ReservationService {
     @Autowired
     PaymentRepository paymentRepository;
 
+    @Autowired
+    AppConfiguration appConfiguration;
+
+    @Autowired
+    JmsTemplate jmsTemplate;
+
+    Logger logger = LoggerFactory.getLogger(ReservationService.class);
+
     @Transactional
-    public ReservationDto reserveCar(ReservationRequestDto dto){
+    public ReservationDto reserveCar(ReservationRequestDto dto) {
 
         CarsDto carsDto = client.searchCarFromFleet("type", dto.getCarType());
 
         Optional<CarDto> optionalCarDto = carsDto.getCars().stream().filter(CarDto::getAvailable).findAny();
-        if(optionalCarDto.isPresent()){
+        if (optionalCarDto.isPresent()) {
             CarDto reserveCarInFleet = client.reserveCarInFleet(optionalCarDto.get().getLicensePlate());
 
             Reservation reservation = new Reservation();
             reservation.setLicensePlate(reserveCarInFleet.getLicensePlate());
-            reservation.setStartDate(LocalDate.now());
-            reservation.setEndDate(LocalDate.now());
+            reservation.setStartDate(dto.getStartDate());
+            reservation.setEndDate(dto.getStartDate());
             Customer customer = customerRepository.findById(dto.getCustomerNumber()).get();
             reservation.setCustomer(customer);
             reservationRepository.save(reservation);
+
+            logger.info("================= About to send message :: {} to queue :: {}", reservation.getLicensePlate(), appConfiguration.getReservationQueue());
+            jmsTemplate.convertAndSend("reserve-car", reservation.getLicensePlate());
 
             return ReservationDtoTransformer.getReservationDtoFromReservation(reservation);
         }
@@ -63,20 +81,21 @@ public class ReservationService {
 
     @Transactional
     public ReservationDto reservationPickup(String licensePlate, Long customerNumber) {
-        Optional<Reservation> reservation = reservationRepository.findFirstByCustomer_CustomerNumberAndLicensePlate(customerNumber,licensePlate);
+        Optional<Reservation> reservation = reservationRepository.findFirstByCustomer_CustomerNumberAndLicensePlate(customerNumber, licensePlate);
 
-        if(reservation.isPresent()){
+        if (reservation.isPresent()) {
             reservation.get().setPickupDate(LocalDate.now());
             return ReservationDtoTransformer.getReservationDtoFromReservation(reservationRepository.save(reservation.get()));
         }
 
         return null;
     }
+
     @Transactional
     public ReservationDto returnCar(String licensePlate, ReturnCarDto dto) {
-        Optional<Reservation> reservation = reservationRepository.findFirstByCustomer_CustomerNumberAndLicensePlate(dto.getCustomerNumber(),licensePlate);
+        Optional<Reservation> reservation = reservationRepository.findFirstByCustomer_CustomerNumberAndLicensePlate(dto.getCustomerNumber(), licensePlate);
 
-        if(reservation.isPresent()){
+        if (reservation.isPresent()) {
             reservation.get().setReturnDate(LocalDate.now());
             Payment payment = createPayment(dto);
             reservation.get().setPayment(payment);
@@ -93,7 +112,7 @@ public class ReservationService {
         payment.setAmountPaid(dto.getAmountPaid());
         payment.setPaymentType(dto.getPaymentType());
         payment.setCustomer(customerRepository.findById(dto.getCustomerNumber()).get());
-        paymentRepository.save(payment);
+       return paymentRepository.save(payment);
 
     }
 }

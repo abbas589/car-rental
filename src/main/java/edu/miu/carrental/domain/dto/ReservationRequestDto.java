@@ -1,5 +1,7 @@
 package edu.miu.carrental.domain.dto;
 
+import java.time.LocalDate;
+
 /**
  * @author bazz
  * Apr 24 2023
@@ -7,6 +9,8 @@ package edu.miu.carrental.domain.dto;
  */
 public class ReservationRequestDto {
     private String carType;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Long customerNumber;
 
     public Long getCustomerNumber() {
@@ -28,5 +32,21 @@ public class ReservationRequestDto {
     public ReservationRequestDto(String carType, Long customerNumber) {
         this.carType = carType;
         this.customerNumber = customerNumber;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 }

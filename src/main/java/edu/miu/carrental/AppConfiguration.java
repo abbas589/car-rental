@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
         (prefix="app.car")
 public class AppConfiguration {
     private String fleetBaseUrl;
+    private String reservationQueue;
     private Long maxRental;
 
 
@@ -31,5 +32,13 @@ public class AppConfiguration {
 
     public void setMaxRental(Long maxRental) {
         this.maxRental = maxRental;
+    }
+
+    public String getReservationQueue() {
+        return reservationQueue;
+    }
+
+    public void setReservationQueue(String reservationQueue) {
+        this.reservationQueue = reservationQueue;
     }
 }
