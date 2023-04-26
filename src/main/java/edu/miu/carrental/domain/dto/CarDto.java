@@ -66,4 +66,15 @@ public class CarDto {
     public void setAvailable(Boolean available) {
         this.available = available;
     }
+
+    @Override
+    public String toString() {
+        return "CarDto{" +
+                "licensePlate='" + licensePlate + '\'' +
+                ", type='" + type + '\'' +
+                ", brand='" + brand + '\'' +
+                ", price=" + price +
+                ", available=" + available +
+                '}';
+    }
 }

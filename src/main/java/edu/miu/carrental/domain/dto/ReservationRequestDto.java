@@ -34,6 +34,9 @@ public class ReservationRequestDto {
         this.customerNumber = customerNumber;
     }
 
+    public ReservationRequestDto() {
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -48,5 +51,15 @@ public class ReservationRequestDto {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "ReservationRequestDto{" +
+                "carType='" + carType + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", customerNumber=" + customerNumber +
+                '}';
     }
 }

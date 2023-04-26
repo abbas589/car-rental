@@ -54,4 +54,15 @@ public class ReturnCarDto {
     public void setCustomerNumber(Long customerNumber) {
         this.customerNumber = customerNumber;
     }
+
+    @Override
+    public String toString() {
+        return "ReturnCarDto{" +
+                "creditCardNumber='" + creditCardNumber + '\'' +
+                ", cardCvv='" + cardCvv + '\'' +
+                ", amountPaid=" + amountPaid +
+                ", paymentType='" + paymentType + '\'' +
+                ", customerNumber=" + customerNumber +
+                '}';
+    }
 }

@@ -23,4 +23,11 @@ public class CustomersDto {
     }
 
     public CustomersDto(){}
+
+    @Override
+    public String toString() {
+        return "CustomersDto{" +
+                "customers=" + customers +
+                '}';
+    }
 }

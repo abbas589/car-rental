@@ -2,6 +2,7 @@ package edu.miu.carrental.service;
 
 import java.math.BigDecimal;
 
+import com.google.gson.Gson;
 import edu.miu.carrental.AppConfiguration;
 import edu.miu.carrental.domain.dto.*;
 import edu.miu.carrental.domain.entity.Customer;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import edu.miu.carrental.CarFleetClient;
 import edu.miu.carrental.domain.entity.Payment;
 import edu.miu.carrental.domain.entity.Reservation;
+import edu.miu.carrental.domain.enums.ReservationStatus;
 import edu.miu.carrental.respository.CustomerRepository;
 import edu.miu.carrental.respository.PaymentRepository;
 import edu.miu.carrental.respository.ReservationRepository;
@@ -48,27 +50,39 @@ public class ReservationService {
     @Autowired
     JmsTemplate jmsTemplate;
 
+    @Autowired
+    Gson gson;
+
     Logger logger = LoggerFactory.getLogger(ReservationService.class);
 
     @Transactional
     public ReservationDto reserveCar(ReservationRequestDto dto) {
 
+        logger.info("Reservation search for car by type {} ==== ", dto.getCarType());
+
         CarsDto carsDto = client.searchCarFromFleet("type", dto.getCarType());
 
+        logger.info("Car response from car DTO ======== {}", gson.toJson(carsDto));
+
         Optional<CarDto> optionalCarDto = carsDto.getCars().stream().filter(CarDto::getAvailable).findAny();
+
         if (optionalCarDto.isPresent()) {
             CarDto reserveCarInFleet = client.reserveCarInFleet(optionalCarDto.get().getLicensePlate());
+
+
 
             Reservation reservation = new Reservation();
             reservation.setLicensePlate(reserveCarInFleet.getLicensePlate());
             reservation.setStartDate(dto.getStartDate());
             reservation.setEndDate(dto.getStartDate());
+            reservation.setReservationStatus(ReservationStatus.RESERVED);
             Customer customer = customerRepository.findById(dto.getCustomerNumber()).get();
             reservation.setCustomer(customer);
             reservationRepository.save(reservation);
 
             logger.info("================= About to send message :: {} to queue :: {}", reservation.getLicensePlate(), appConfiguration.getReservationQueue());
-            jmsTemplate.convertAndSend("reserve-car", reservation.getLicensePlate());
+            String licensePlate = reservation.getLicensePlate();
+            jmsTemplate.convertAndSend("reserve-car", licensePlate);
 
             return ReservationDtoTransformer.getReservationDtoFromReservation(reservation);
         }
@@ -85,6 +99,8 @@ public class ReservationService {
 
         if (reservation.isPresent()) {
             reservation.get().setPickupDate(LocalDate.now());
+
+            reservation.get().setReservationStatus(ReservationStatus.PICKED_UP);
             return ReservationDtoTransformer.getReservationDtoFromReservation(reservationRepository.save(reservation.get()));
         }
 
@@ -97,6 +113,7 @@ public class ReservationService {
 
         if (reservation.isPresent()) {
             reservation.get().setReturnDate(LocalDate.now());
+            reservation.get().setReservationStatus(ReservationStatus.RETURNED);
             Payment payment = createPayment(dto);
             reservation.get().setPayment(payment);
             return ReservationDtoTransformer.getReservationDtoFromReservation(reservationRepository.save(reservation.get()));

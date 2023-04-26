@@ -53,5 +53,15 @@ public class CustomerDto {
         this.email = email;
     }
     public CustomerDto(){}
+
+    @Override
+    public String toString() {
+        return "CustomerDto{" +
+                "customerNumber=" + customerNumber +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", reservations=" + reservations +
+                '}';
+    }
 }
 

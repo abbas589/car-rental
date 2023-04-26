@@ -22,4 +22,12 @@ public class Employee {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", employeeName='" + employeeName + '\'' +
+                '}';
+    }
 }

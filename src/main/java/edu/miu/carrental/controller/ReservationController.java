@@ -1,5 +1,6 @@
 package edu.miu.carrental.controller;
 
+import com.google.gson.Gson;
 import edu.miu.carrental.domain.dto.*;
 import edu.miu.carrental.service.ReservationService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,13 @@ public class ReservationController {
     @Autowired
     ReservationService reservationService;
 
-    @PostMapping
-    public ResponseEntity<?> reserveCar(ReservationRequestDto dto){
+    @Autowired
+    Gson gson;
+
+    @PostMapping("/create")
+    public ResponseEntity<?> reserveCar(@RequestBody ReservationRequestDto dto){
+        log.info("RESERVE CUSTOMER ENDPOINT CALLED ==== {} ", dto.getCarType());
+
         ReservationDto reservationDto = reservationService.reserveCar(dto);
         log.info("RESERVE CUSTOMER ENDPOINT CALLED ====");
 
@@ -52,7 +58,7 @@ public class ReservationController {
         return new ResponseEntity<>(reservationDto,HttpStatus.OK);
 
     }
-    @PostMapping("{licensePlate}/return/{customerNumber}")
+    @PostMapping("{licensePlate}/return")
     public ResponseEntity<?> returnCar(@PathVariable("licensePlate") String licensePlate, @RequestBody ReturnCarDto dto) {
 
         ReservationDto reservationDto = reservationService.returnCar(licensePlate, dto);

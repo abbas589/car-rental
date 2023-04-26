@@ -42,4 +42,13 @@ public class ReservationDto {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
+    @Override
+    public String toString() {
+        return "ReservationDto{" +
+                "licensePlate='" + licensePlate + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

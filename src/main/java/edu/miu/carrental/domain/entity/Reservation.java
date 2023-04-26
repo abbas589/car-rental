@@ -1,9 +1,7 @@
 package edu.miu.carrental.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import edu.miu.carrental.domain.enums.ReservationStatus;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +18,8 @@ public class Reservation {
     private Long id;
     private String licensePlate;
 
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus reservationStatus;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -105,5 +105,28 @@ public class Reservation {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public ReservationStatus getReservationStatus() {
+        return reservationStatus;
+    }
+
+    public void setReservationStatus(ReservationStatus reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", licensePlate='" + licensePlate + '\'' +
+                ", reservationStatus=" + reservationStatus +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", pickupDate=" + pickupDate +
+                ", returnDate=" + returnDate +
+                ", customer=" + customer +
+                ", payment=" + payment +
+                '}';
     }
 }
