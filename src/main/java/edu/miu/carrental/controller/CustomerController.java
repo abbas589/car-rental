@@ -1,17 +1,14 @@
 package edu.miu.carrental.controller;
 
+import edu.miu.carrental.domain.dto.CustomerDataDto;
 import edu.miu.carrental.domain.dto.CustomerDto;
 import edu.miu.carrental.domain.dto.CustomersDto;
-import edu.miu.carrental.domain.entity.Customer;
 import edu.miu.carrental.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author bazz
@@ -27,7 +24,6 @@ public class CustomerController {
     CustomerService customerService;
 
 
-
     @GetMapping
     public ResponseEntity<CustomersDto> getAllCustomers() {
         log.info("GETTING ALL CUSTOMER ENDPOINT CALLED====");
@@ -40,6 +36,12 @@ public class CustomerController {
 
         log.info("SEARCH CUSTOMER ENDPOINT CALLED====");
         return new ResponseEntity<CustomersDto>(customerService.searchCustomer(searchBy,value),HttpStatus.OK);
+    }
+    @GetMapping("{customernumber}/get")
+    public ResponseEntity<CustomerDataDto> getCustomerData(@PathVariable("customernumber") Long customernumber){
+
+        log.info("GET CUSTOMERDATA ENDPOINT CALLED====");
+        return new ResponseEntity<CustomerDataDto>(customerService.getCustomerData(customernumber),HttpStatus.OK);
     }
 
     @PostMapping("create")

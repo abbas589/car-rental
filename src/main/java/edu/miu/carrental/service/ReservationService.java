@@ -69,8 +69,6 @@ public class ReservationService {
         if (optionalCarDto.isPresent()) {
             CarDto reserveCarInFleet = client.reserveCarInFleet(optionalCarDto.get().getLicensePlate());
 
-
-
             Reservation reservation = new Reservation();
             reservation.setLicensePlate(reserveCarInFleet.getLicensePlate());
             reservation.setStartDate(dto.getStartDate());
@@ -91,6 +89,13 @@ public class ReservationService {
 
     public CarsDto searchCar(String type) {
         return client.searchCarFromFleet("type", type);
+    }
+
+    public CarDataPojo getCarData(String licenseplate){
+
+        CarDto carsDto = client.searchCarFromFleet("licenseplate",licenseplate).getCars().stream().findAny().get();
+        reservationRepository.findAllByLicensePlateIgnoreCase(licenseplate);
+        return new CarDataPojo(carsDto,reservationRepository.findAllByLicensePlateIgnoreCase(licenseplate));
     }
 
     @Transactional
@@ -131,5 +136,9 @@ public class ReservationService {
         payment.setCustomer(customerRepository.findById(dto.getCustomerNumber()).get());
        return paymentRepository.save(payment);
 
+    }
+
+    public CarsDto searchCars(String searchBy, String value) {
+        return client.searchCarFromFleet(searchBy, value);
     }
 }

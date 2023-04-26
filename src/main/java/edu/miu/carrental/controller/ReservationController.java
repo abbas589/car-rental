@@ -43,6 +43,17 @@ public class ReservationController {
         log.info("SEARCH CAR ENDPOINT CALLED ====");
         return new ResponseEntity<CarsDto>(reservationService.searchCar(type), HttpStatus.OK);
     }
+    @GetMapping("{licensePlate}/get")
+    public ResponseEntity<?> getCarData(@PathVariable("licensePlate") String licensePlate){
+        log.info("SEARCH CAR ENDPOINT CALLED ====");
+        return new ResponseEntity<CarDataPojo>(reservationService.getCarData(licensePlate), HttpStatus.OK);
+    }
+
+    @GetMapping("search-cars")
+    public ResponseEntity<?> searchCars(@RequestParam("searchBy") String searchBy,@RequestParam("value") String value){
+        log.info("SEARCH CAR ENDPOINT CALLED ====");
+        return new ResponseEntity<CarsDto>(reservationService.searchCars(searchBy,value), HttpStatus.OK);
+    }
 
     @PostMapping("{licensePlate}/pickup/{customerNumber}")
     public ResponseEntity<?> pickupCar(@PathVariable("licensePlate") String licensePlate, @PathVariable("customerNumber") Long  customerNumber) {

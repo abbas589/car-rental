@@ -1,0 +1,16 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: 'EA_CAR_RENTAL'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['docker.for.mac.localhost:8200']
+
+
+#/Users/bazz/Documents/projectd/MAHARISHI/EA/Project/car-rental/src/main/resources/prometheus.prometheus.yml
+
+#  docker run --name prometheus \
+#  -v /Users/bazz/Documents/projectd/MAHARISHI/EA/Project/car-rental/src/main/resources/prometheus.prometheus.yml \
+#  bitnami/prometheus:latest

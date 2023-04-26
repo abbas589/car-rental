@@ -47,10 +47,11 @@ public class CustomerDto {
         this.reservations = reservations;
     }
 
-    public CustomerDto(Long customerNumber, String name, String email) {
+    public CustomerDto(Long customerNumber, String name, String email, List<Reservation> reservations) {
         this.customerNumber = customerNumber;
         this.name = name;
         this.email = email;
+        this.reservations = reservations;
     }
     public CustomerDto(){}
 

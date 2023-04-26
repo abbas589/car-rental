@@ -1,10 +1,13 @@
 package edu.miu.carrental.service;
 
+import edu.miu.carrental.domain.dto.CustomerDataDto;
 import edu.miu.carrental.domain.dto.CustomerDto;
 import edu.miu.carrental.domain.dto.CustomerDtoTransformer;
 import edu.miu.carrental.domain.dto.CustomersDto;
 import edu.miu.carrental.domain.entity.Customer;
 import edu.miu.carrental.respository.CustomerRepository;
+import edu.miu.carrental.respository.PaymentRepository;
+import edu.miu.carrental.respository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +24,16 @@ public class CustomerService {
 
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    CustomerDtoTransformer customerDtoTransformer;
+    @Autowired
+    ReservationRepository reservationRepository;
+    @Autowired
+    PaymentRepository paymentRepository;
+
 
     public CustomersDto getAllCustomers(){
-        return CustomerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.findAll());
+        return customerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.findAll());
     }
 
     @Transactional
@@ -32,7 +42,7 @@ public class CustomerService {
         customer.setCustomerNumber(dto.getCustomerNumber());
         customer.setName(dto.getName());
         customer.setEmail(dto.getEmail());
-        return CustomerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.save(customer));
+        return customerDtoTransformer.getCustomerDtoFromCustomer(customerRepository.save(customer));
     }
 
     public CustomerDto updateCustomer(Long customerNumber, CustomerDto dto){
@@ -41,7 +51,7 @@ public class CustomerService {
             Customer customer = optionalCustomer.get();
             customer.setEmail(dto.getEmail());
             customer.setName(dto.getName());
-           return CustomerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.save(customer));
+           return customerDtoTransformer.getCustomerDtoFromCustomer(customerRepository.save(customer));
         }
         return null;
     }
@@ -61,11 +71,26 @@ public class CustomerService {
         CustomersDto customersDto = new CustomersDto();
         switch (searchBy){
             case "customernumber":
-                return CustomerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.findAllByCustomerNumber(value));
+                return customerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.findAllByCustomerNumber(value));
             case "name":
-                return CustomerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.findAllByNameIgnoreCase(value));
+                return customerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.findAllByNameIgnoreCase(value));
             case "email":
-                return CustomerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.findAllByEmailIgnoreCase(value));
+                return customerDtoTransformer.getCustomersDtoFromCustomers(customerRepository.findAllByEmailIgnoreCase(value));
+        }
+        return null;
+    }
+    public CustomerDataDto getCustomerData(Long customernumber) {
+        CustomerDataDto customerDto = new CustomerDataDto();
+
+        Optional<Customer> customerOptional = customerRepository.findById(customernumber);
+        if(customerOptional.isPresent()){
+            Customer customer = customerOptional.get();
+            customerDto.setCustomer(customerDtoTransformer.getCustomerDtoFromCustomer(customer));
+            customerDto
+                    .setReservations(reservationRepository.findAllByCustomer(customer));
+            customerDto.setPayments(paymentRepository.findAllByCustomer(customer));
+
+            return customerDto;
         }
         return null;
     }
