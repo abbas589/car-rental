@@ -75,8 +75,8 @@ public class ReservationService {
         return null;
     }
 
-    public CarsDto searchCar(ReservationRequestDto dto) {
-        return client.searchCarFromFleet("type", dto.getCarType());
+    public CarsDto searchCar(String type) {
+        return client.searchCarFromFleet("type", type);
     }
 
     @Transactional

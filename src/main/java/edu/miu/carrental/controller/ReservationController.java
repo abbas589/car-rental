@@ -1,9 +1,6 @@
 package edu.miu.carrental.controller;
 
-import edu.miu.carrental.domain.dto.CarsDto;
-import edu.miu.carrental.domain.dto.RentalDto;
-import edu.miu.carrental.domain.dto.ReservationDto;
-import edu.miu.carrental.domain.dto.ReservationRequestDto;
+import edu.miu.carrental.domain.dto.*;
 import edu.miu.carrental.service.ReservationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +32,10 @@ public class ReservationController {
         }
         return new ResponseEntity<ReservationDto>(reservationDto, HttpStatus.OK);
     }
-    @PostMapping("search")
-    public ResponseEntity<?> searchCar(ReservationRequestDto dto){
+    @GetMapping("search")
+    public ResponseEntity<?> searchCar(@RequestParam("type") String type){
         log.info("SEARCH CAR ENDPOINT CALLED ====");
-        return new ResponseEntity<CarsDto>(reservationService.searchCar(dto), HttpStatus.OK);
+        return new ResponseEntity<CarsDto>(reservationService.searchCar(type), HttpStatus.OK);
     }
 
     @PostMapping("{licensePlate}/pickup/{customerNumber}")
@@ -56,12 +53,12 @@ public class ReservationController {
 
     }
     @PostMapping("{licensePlate}/return/{customerNumber}")
-    public ResponseEntity<?> returnCar(@PathVariable("licensePlate") String licensePlate, @PathVariable("customerNumber") Long  customerNumber) {
+    public ResponseEntity<?> returnCar(@PathVariable("licensePlate") String licensePlate, @RequestBody ReturnCarDto dto) {
 
-        ReservationDto reservationDto = reservationService.reservationPickup(licensePlate, customerNumber);
+        ReservationDto reservationDto = reservationService.returnCar(licensePlate, dto);
 
         if(reservationDto == null){
-            return new ResponseEntity<>("Reservation not found or already picked up", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Reservation not found or already returned", HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(reservationDto,HttpStatus.OK);

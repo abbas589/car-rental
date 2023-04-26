@@ -19,7 +19,7 @@ import java.util.List;
  * 18:06
  */
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/customer")
 @Slf4j
 public class CustomerController {
 

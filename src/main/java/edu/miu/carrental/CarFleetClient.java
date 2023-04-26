@@ -18,10 +18,11 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @Service
 public class CarFleetClient {
-    @Autowired AppConfiguration appConfiguration;
+    @Autowired
+    private AppConfiguration appConfiguration;
     RestTemplate restTemplate = new RestTemplate();
 
-    String fleetBaseUrl = appConfiguration.getFleetBaseUrl();
+    String fleetBaseUrl = "http://localhost:8300/car";
 
     Logger logger = LoggerFactory.getLogger(CarFleetClient.class);
 
