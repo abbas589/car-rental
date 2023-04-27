@@ -33,6 +33,12 @@ public class ReservationRequestDto {
         this.carType = carType;
         this.customerNumber = customerNumber;
     }
+    public ReservationRequestDto(String carType, Long customerNumber, LocalDate startDate, LocalDate endDate) {
+        this.carType = carType;
+        this.customerNumber = customerNumber;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public ReservationRequestDto() {
     }

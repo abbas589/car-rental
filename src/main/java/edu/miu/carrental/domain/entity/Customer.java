@@ -45,6 +45,14 @@ public class Customer {
         this.email = email;
     }
 
+    public Customer() {
+    }
+
+    public Customer(Long customerNumber, String name, String email) {
+        this.customerNumber = customerNumber;
+        this.name = name;
+        this.email = email;
+    }
 
     @Override
     public String toString() {
